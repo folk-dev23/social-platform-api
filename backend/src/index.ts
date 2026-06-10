@@ -7,6 +7,7 @@ import { connectDB } from './config/database';
 import { connectRedis } from './config/redis';
 import authRoutes from './modules/auth/auth.routes';
 import usersRoutes from './modules/users/users.routes';
+import postsRoutes from './modules/posts/posts.routes';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/posts', postsRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
