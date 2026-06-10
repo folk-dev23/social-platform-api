@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { pool } from '../../config/database';
-
+import { AuthRequest } from '../../middleware/auth.middleware';
 const generateAccessToken = (userId: string, role: string): string => {
   return jwt.sign(
     { userId, role },
@@ -147,6 +147,27 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
   } catch (error: any) {
     console.error('Login error:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const result = await pool.query(
+      `SELECT id, username, email, role, is_verified, created_at
+       FROM users WHERE id = $1`,
+      [req.user?.userId]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    res.json({ user: result.rows[0] });
+
+  } catch (error: any) {
+    console.error('GetMe error:', error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
