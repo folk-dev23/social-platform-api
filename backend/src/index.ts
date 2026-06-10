@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import { connectDB } from './config/database';
+import { connectRedis } from './config/redis';
 
 dotenv.config();
 
@@ -26,8 +28,14 @@ app.get('/health', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🐾 Server running on http://localhost:${PORT}`);
-});
+const start = async (): Promise<void> => {
+  await connectDB();
+  await connectRedis();
+  app.listen(PORT, () => {
+    console.log(`🐾 Server running on http://localhost:${PORT}`);
+  });
+};
+
+start();
 
 export default app;
