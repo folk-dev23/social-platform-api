@@ -12,6 +12,7 @@ import feedRoutes from './modules/feed/feed.routes';
 import trendingRoutes from './modules/trending/trending.routes';
 import recommendationsRoutes from './modules/recommendations/recommendations.routes';
 import notificationsRoutes from './modules/notifications/notifications.routes';
+import moderationRoutes from './modules/moderation/moderation.routes';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use('/api/feed', feedRoutes);
 app.use('/api/trending', trendingRoutes);
 app.use('/api/recommendations', recommendationsRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api/admin', moderationRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
