@@ -43,4 +43,4 @@ CREATE TABLE password_reset_tokens (
 -- Indexes
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_username ON users(username);
-CREATE INDEX idx_refresh_tokens_user_id ON refresh_tokens(user_id);
+CREATE INDEX idx_refresh_tokens_user_id ON refresh_tokens(user_id);  
