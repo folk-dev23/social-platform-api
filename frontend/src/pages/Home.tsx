@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import api from '../api/client';
+import CreatePost from '../components/CreatePost';
 
 interface Post {
   id: string;
@@ -22,19 +23,29 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchFeed = async () => {
+    try {
+      const res = await api.get('/feed/public');
+      setPosts(res.data.posts);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchFeed = async () => {
-      try {
-        const res = await api.get('/feed/public');
-        setPosts(res.data.posts);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchFeed();
   }, []);
+
+  const handleLike = async (postId: string) => {
+    try {
+      await api.post(`/posts/${postId}/react`);
+      fetchFeed();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-950">
@@ -56,6 +67,10 @@ export default function Home() {
 
       {/* Content */}
       <div className="max-w-2xl mx-auto px-4 py-6">
+        {/* Create Post */}
+        <CreatePost onPostCreated={fetchFeed} />
+
+        {/* Feed */}
         {isLoading ? (
           <div className="text-center text-gray-400 py-20">Loading feed...</div>
         ) : posts.length === 0 ? (
@@ -106,7 +121,12 @@ export default function Home() {
 
                 {/* Engagement */}
                 <div className="flex items-center gap-5 text-gray-500 text-sm pt-3 border-t border-gray-800">
-                  <span>❤️ {post.likes}</span>
+                  <button
+                    onClick={() => handleLike(post.id)}
+                    className="flex items-center gap-1 hover:text-red-400 transition"
+                  >
+                    ❤️ {post.likes}
+                  </button>
                   <span>💬 {post.comments}</span>
                   <span>🔁 {post.shares}</span>
                   <span className="ml-auto text-xs">
