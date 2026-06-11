@@ -1,12 +1,13 @@
 import { Response } from 'express';
 import { pool } from '../../config/database';
 import { AuthRequest } from '../../middleware/auth.middleware';
+import { createNotification } from '../notifications/notifications.controller';
 
 export const addComment = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const { content, parent_id } = req.body;
-    const userId = req.user?.userId;
+    const userId = req.user?.userId as string;
 
     if (!content || content.trim() === '') {
       res.status(400).json({ message: 'Content is required' });
@@ -14,7 +15,7 @@ export const addComment = async (req: AuthRequest, res: Response): Promise<void>
     }
 
     const post = await pool.query(
-      'SELECT id FROM posts WHERE id = $1 AND deleted_at IS NULL',
+      'SELECT id, user_id FROM posts WHERE id = $1 AND deleted_at IS NULL',
       [id]
     );
 
@@ -30,9 +31,24 @@ export const addComment = async (req: AuthRequest, res: Response): Promise<void>
       [userId, id, parent_id || null, content.trim()]
     );
 
+    const comment = result.rows[0];
+
+    // Notify post owner
+      await createNotification(post.rows[0].user_id, userId, 'comment', id as string, comment.id);
+    // Notify parent comment owner if reply
+    if (parent_id) {
+      const parentComment = await pool.query(
+        'SELECT user_id FROM comments WHERE id = $1',
+        [parent_id]
+      );
+      if (parentComment.rows.length > 0) {
+       await createNotification(parentComment.rows[0].user_id, userId, 'reply', id as string, comment.id);
+      }
+    }
+
     res.status(201).json({
       message: 'Comment added successfully',
-      comment: result.rows[0],
+      comment,
     });
 
   } catch (error: any) {
