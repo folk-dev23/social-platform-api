@@ -22,81 +22,170 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+    <div style={{
+      minHeight: '100vh',
+      background: 'var(--bg)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '0 16px',
+    }}>
+      {/* Background glow */}
+      <div style={{
+        position: 'fixed', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(122,28,172,0.12) 0%, transparent 70%)',
+      }} />
+
+      <div style={{ width: '100%', maxWidth: 420, position: 'relative', zIndex: 1 }}>
+
         {/* Logo */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">🐾 Popular Monsters</h1>
-          <p className="text-gray-400">Create your account</p>
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: 14,
+            background: 'linear-gradient(135deg,#2A0820,#1A0535)',
+            border: '1px solid rgba(255,20,147,0.3)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 28, margin: '0 auto 14px',
+            boxShadow: '0 0 20px rgba(255,20,147,0.3)',
+          }}>😈</div>
+          <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '.04em' }}>
+            <span style={{ color: '#fff' }}>POPULAR </span>
+            <span style={{ color: 'var(--pink)', textShadow: '0 0 15px rgba(255,20,147,.5)' }}>MONSTERS</span>
+          </div>
+          <div style={{ color: 'var(--sub)', fontSize: 13, marginTop: 6 }}>
+            Join the dark realm
+          </div>
         </div>
 
         {/* Card */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+        <div style={{
+          background: 'var(--card)',
+          border: '1px solid var(--border)',
+          borderRadius: 16,
+          padding: 28,
+          position: 'relative', overflow: 'hidden',
+        }}>
+          {/* Top glow line */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: 1,
+            background: 'linear-gradient(90deg,transparent,var(--pink),transparent)',
+            opacity: .5,
+          }} />
+
           {error && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg px-4 py-3 mb-6 text-sm">
+            <div style={{
+              background: 'rgba(255,0,85,.08)',
+              border: '1px solid rgba(255,0,85,.2)',
+              color: '#FF5577', borderRadius: 8,
+              padding: '10px 14px', marginBottom: 18,
+              fontSize: 13,
+            }}>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+          <form onSubmit={handleSubmit}>
+            {/* Username */}
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--sub)', marginBottom: 6 }}>
                 Username
               </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition"
                 placeholder="yourname"
                 required
+                style={{
+                  width: '100%',
+                  background: 'rgba(255,255,255,.04)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 8, padding: '10px 14px',
+                  color: '#fff', fontSize: 14,
+                  fontFamily: 'Inter, sans-serif', outline: 'none',
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'rgba(255,20,147,.4)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+            {/* Email */}
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--sub)', marginBottom: 6 }}>
                 Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition"
                 placeholder="you@example.com"
                 required
+                style={{
+                  width: '100%',
+                  background: 'rgba(255,255,255,.04)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 8, padding: '10px 14px',
+                  color: '#fff', fontSize: 14,
+                  fontFamily: 'Inter, sans-serif', outline: 'none',
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'rgba(255,20,147,.4)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+            {/* Password */}
+            <div style={{ marginBottom: 22 }}>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--sub)', marginBottom: 6 }}>
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition"
                 placeholder="••••••••"
                 required
+                style={{
+                  width: '100%',
+                  background: 'rgba(255,255,255,.04)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 8, padding: '10px 14px',
+                  color: '#fff', fontSize: 14,
+                  fontFamily: 'Inter, sans-serif', outline: 'none',
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'rgba(255,20,147,.4)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-3 transition"
+              style={{
+                width: '100%', height: 42, borderRadius: 8,
+                background: 'var(--pink)', color: '#fff',
+                fontSize: 14, fontWeight: 700, border: 'none',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                opacity: isLoading ? .7 : 1,
+                fontFamily: 'Inter, sans-serif',
+                boxShadow: '0 4px 20px rgba(255,20,147,.35)',
+                transition: 'all .2s',
+              }}
             >
-              {isLoading ? 'Creating account...' : 'Create Account'}
+              {isLoading ? 'Creating account...' : '⚡ Create Account'}
             </button>
           </form>
 
-          <p className="text-center text-gray-400 text-sm mt-6">
+          <p style={{ textAlign: 'center', color: 'var(--sub)', fontSize: 13, marginTop: 18 }}>
             Already have an account?{' '}
-            <Link to="/login" className="text-purple-400 hover:text-purple-300">
+            <Link to="/login" style={{ color: 'var(--hotpink)', fontWeight: 700, textDecoration: 'none' }}>
               Sign in
             </Link>
           </p>
         </div>
+
+        <p style={{ textAlign: 'center', color: 'rgba(155,138,174,.35)', fontSize: 11, marginTop: 16, letterSpacing: '.08em' }}>
+          — BE SEEN. BE HEARD. BE WORSHIPPED. —
+        </p>
       </div>
     </div>
   );
