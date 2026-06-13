@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+/* ── DESIGN TOKENS ── */
+:root {
+  --bg:#08040F;
+  --sidebar:#0C0715;
+  --card:#110819;
+  --card2:#140A1E;
+  --pink:#FF1493;
+  --hotpink:#FF3EA5;
+  --darkpink:#C4006A;
+  --purple:#7A1CAC;
+  --purple-dark:#30043E;
+  --text:#FFFFFF;
+  --sub:#9B8AAE;
+  --border:rgba(255,255,255,0.07);
+  --pinkborder:rgba(255,20,147,0.2);
+  --glow:0 0 20px rgba(255,20,147,0.4);
+  --glow-sm:0 0 10px rgba(255,20,147,0.3);
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,20,147,0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,20,147,0.4); }
+
+/* ── ANIMATIONS ── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: var(--glow-sm); }
+  50% { box-shadow: 0 0 4px rgba(255,20,147,0.1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.3s ease forwards; }
